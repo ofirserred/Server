@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>טופס רישום משתמש</title>
+</head>
+<body>
+  <h2>רישום משתמש חדש</h2>
+  <form id="registerForm">
+    <label>שם משתמש:</label><br>
+    <input type="text" name="username" required><br><br>
+
+    <label>אימייל:</label><br>
+    <input type="email" name="email" required><br><br>
+
+    <label>סיסמה:</label><br>
+    <input type="password" name="password" required><br><br>
+
+    <button type="submit">רישום</button>
+  </form>
+
+  <p id="response"></p>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const data = {
+        username: formData.get('username'),
+        email: formData.get('email'),
+        password: formData.get('password')
+      };
+
+      try {
+        const res = await fetch('https://server-1pd3.onrender.com/api/users/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        document.getElementById('response').innerText = JSON.stringify(result, null, 2);
+      } catch (err) {
+        document.getElementById('response').innerText = 'שגיאה: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>

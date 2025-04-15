@@ -4,16 +4,27 @@ const User = require('../models/User');
 // יצירת משתמש חדש
 const createUser = async (req, res) => {
   try {
-    const { name, email } = req.body;
+    jsonBody.put("name", username);
+	jsonBody.put("email", email);
+	jsonBody.put("password", password);
+
 
     const newUser = new User({ name, email });
     await newUser.save();
 
-    res.status(201).json({ message: 'User created', user: newUser });
+    res.status(201).json({
+      success: true,
+      message: 'המשתמש נוצר בהצלחה',
+      user: newUser
+    });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
   }
 };
+
 
 // שליפת כל המשתמשים
 const getUsers = async (req, res) => {
