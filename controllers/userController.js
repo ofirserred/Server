@@ -4,9 +4,9 @@ const User = require('../models/User');
 // יצירת משתמש חדש
 const createUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+	const { firstName, lastName, email, password, role } = req.body;
 
-    const newUser = new User({ name, email, password }); // שים לב שהוספתי גם את הסיסמה אם יש שדה כזה במודל
+	const newUser = new User({ firstName, lastName, email, password, role });
     await newUser.save();
 
     res.status(201).json({
