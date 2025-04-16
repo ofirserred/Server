@@ -4,12 +4,9 @@ const User = require('../models/User');
 // יצירת משתמש חדש
 const createUser = async (req, res) => {
   try {
-    jsonBody.put("name", username);
-	jsonBody.put("email", email);
-	jsonBody.put("password", password);
+    const { name, email, password } = req.body;
 
-
-    const newUser = new User({ name, email });
+    const newUser = new User({ name, email, password }); // שים לב שהוספתי גם את הסיסמה אם יש שדה כזה במודל
     await newUser.save();
 
     res.status(201).json({
@@ -24,6 +21,7 @@ const createUser = async (req, res) => {
     });
   }
 };
+
 
 
 // שליפת כל המשתמשים
