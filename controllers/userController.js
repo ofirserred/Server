@@ -35,8 +35,19 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ success: false, message: "סיסמה שגויה" });
     }
 
-    return res.status(200).json({ success: true, message: "התחברת בהצלחה", user });
-  } catch (error) {
+	return res.status(200).json({
+	  success: true,
+	  message: "התחברת בהצלחה",
+	  user: {
+		email: user.email,
+		role: user.role,
+		firstName: user.firstName,
+		lastName: user.lastName
+	  }
+	});
+  } 
+  catch (error) 
+  {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
