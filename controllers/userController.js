@@ -39,12 +39,11 @@ const loginUser = async (req, res) => {
 	  success: true,
 	  message: "התחברת בהצלחה",
 	  user: {
-		email: user.email,
-		role: user.role,
-		firstName: user.firstName,
-		lastName: user.lastName
+		email: user.email || "",
+		role: user.role || ""
 	  }
 	});
+
   } 
   catch (error) 
   {
