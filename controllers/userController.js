@@ -22,6 +22,25 @@ const createUser = async (req, res) => {
   }
 };
 
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ success: false, message: "משתמש לא נמצא" });
+    }
+
+    if (user.password !== password) {
+      return res.status(401).json({ success: false, message: "סיסמה שגויה" });
+    }
+
+    return res.status(200).json({ success: true, message: "התחברת בהצלחה", user });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 
 
 // שליפת כל המשתמשים
@@ -34,4 +53,4 @@ const getUsers = async (req, res) => {
   }
 };
 
-module.exports = { createUser, getUsers };
+module.exports = { createUser, getUsers, loginUser };
