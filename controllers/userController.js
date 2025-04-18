@@ -4,9 +4,9 @@ const User = require('../models/User');
 // יצירת משתמש חדש
 const createUser = async (req, res) => {
   try {
-	const { firstName, lastName, email, password, role } = req.body;
+	const { email, password, role } = req.body;
+	const newUser = new User({ email, password, role });
 
-	const newUser = new User({ firstName, lastName, email, password, role });
     await newUser.save();
 
     res.status(201).json({
@@ -36,13 +36,13 @@ const loginUser = async (req, res) => {
     }
 
 	return res.status(200).json({
-	  success: true,
-	  message: "התחברת בהצלחה",
-	  user: {
-		email: user.email || "",
-		role: user.role || ""
-	  }
-	});
+  success: true,
+  message: "התחברת בהצלחה",
+  user: {
+    email: user.email || "",
+    role: user.role || ""
+  }
+});
 
   } 
   catch (error) 

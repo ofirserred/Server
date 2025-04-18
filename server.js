@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
 const teacherRoutes = require("./routes/teacherRoutes");
+const studentRoutes = require("./routes/studentRoutes");
 
 dotenv.config();
 
@@ -16,6 +17,8 @@ app.use(express.json());
 // Routes
 app.use('/api', userRoutes);
 app.use("/api", teacherRoutes);
+app.use("/api", studentRoutes);
+
 
 
 // Connect to MongoDB

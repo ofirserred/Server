@@ -4,6 +4,8 @@ const createTeacherProfile = async (req, res) => {
   try {
     const {
       userEmail,
+	  firstName,
+	  lastName,
       birthDate,
       gender,
       city,
@@ -17,6 +19,8 @@ const createTeacherProfile = async (req, res) => {
 
     const profile = new TeacherProfile({
       userEmail,
+	  firstName,
+      lastName,
       birthDate,
       gender,
       city,

@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 
 const teacherProfileSchema = new mongoose.Schema({
   userEmail: { type: String, required: true }, // מזהה את המשתמש
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
   birthDate: String,
   gender: String,
   city: String,
