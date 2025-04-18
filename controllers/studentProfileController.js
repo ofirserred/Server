@@ -2,7 +2,7 @@ const StudentProfile = require("../models/StudentProfile");
 
 const createStudentProfile = async (req, res) => {
   try {
-    const { userEmail, grade, region, gender } = req.body;
+    const { userEmail, firstName, grade, region, gender } = req.body;
 
     const existing = await StudentProfile.findOne({ userEmail });
     if (existing) {
