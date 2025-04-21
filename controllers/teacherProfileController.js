@@ -45,8 +45,6 @@ const createTeacherProfile = async (req, res) => {
   }
 };
 
-const TeacherProfile = require("../models/TeacherProfile");
-
 const getTeacherProfileByEmail = async (req, res) => {
   try {
     const { email } = req.query;
