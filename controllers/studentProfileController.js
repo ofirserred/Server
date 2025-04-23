@@ -25,4 +25,23 @@ const createStudentProfile = async (req, res) => {
   }
 };
 
-module.exports = { createStudentProfile };
+const getStudentProfileByEmail = async (req, res) => {
+  try {
+    const { email } = req.query;
+    const profile = await StudentProfile.findOne({ userEmail: email });
+
+    if (!profile) {
+      return res.status(404).json({ success: false, message: "פרופיל לא נמצא" });
+    }
+
+    res.status(200).json({ success: true, profile });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+module.exports = {
+  createStudentProfile,
+  getStudentProfileByEmail
+};
