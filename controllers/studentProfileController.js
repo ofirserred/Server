@@ -1,4 +1,7 @@
+// controllers/studentProfileController.js
+
 const StudentProfile = require("../models/StudentProfile");
+const User = require("../models/User");
 
 const createStudentProfile = async (req, res) => {
   try {
@@ -11,7 +14,7 @@ const createStudentProfile = async (req, res) => {
 
     const profile = new StudentProfile({
       userEmail,
-	  firstName,
+      firstName,
       grade,
       region,
       gender
@@ -40,8 +43,34 @@ const getStudentProfileByEmail = async (req, res) => {
   }
 };
 
+/**
+ * DELETE student profile & user after password confirmation
+ */
+const deleteStudentProfile = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // 1) מציאת המשתמש ובדיקת סיסמה
+    const user = await User.findOne({ email });
+    if (!user || user.password !== password) {
+      return res.status(401).json({ success: false, message: "סיסמה שגויה" });
+    }
+
+    // 2) מחיקת פרופיל תלמיד
+    await StudentProfile.deleteOne({ userEmail: email });
+
+    // 3) מחיקת המשתמש עצמו
+    await User.deleteOne({ email });
+
+    return res.json({ success: true, message: "הפרופיל נמחק בהצלחה" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 module.exports = {
   createStudentProfile,
-  getStudentProfileByEmail
+  getStudentProfileByEmail,
+  deleteStudentProfile
 };
