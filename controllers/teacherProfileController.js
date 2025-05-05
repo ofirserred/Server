@@ -3,7 +3,64 @@
 const TeacherProfile = require("../models/TeacherProfile");
 const User = require("../models/User");
 
-// ... createTeacherProfile, getTeacherProfileByEmail כבר קיימים כאן
+const createTeacherProfile = async (req, res) => {
+  try {
+    const {
+      userEmail,
+      firstName,
+      lastName,
+      birthDate,
+      gender,
+      city,
+      priceFrom,
+      priceTo,
+      subjects,
+      experience,
+      about,
+      imageUrl
+    } = req.body;
+
+    const profile = new TeacherProfile({
+      userEmail,
+      firstName,
+      lastName,
+      birthDate,
+      gender,
+      city,
+      priceFrom,
+      priceTo,
+      subjects,
+      experience,
+      about,
+      imageUrl
+    });
+
+    await profile.save();
+
+    res.status(201).json({
+      success: true,
+      message: "פרופיל מורה נשמר בהצלחה",
+      profile
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const getTeacherProfileByEmail = async (req, res) => {
+  try {
+    const { email } = req.query;
+    const profile = await TeacherProfile.findOne({ userEmail: email });
+
+    if (!profile) {
+      return res.status(404).json({ success: false, message: "פרופיל לא נמצא" });
+    }
+
+    res.status(200).json({ success: true, profile });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 /**
  * DELETE teacher profile & user after password confirmation
@@ -34,5 +91,5 @@ const deleteTeacherProfile = async (req, res) => {
 module.exports = {
   createTeacherProfile,
   getTeacherProfileByEmail,
-  deleteTeacherProfile    // ← הוסיפו אותו כאן
+  deleteTeacherProfile
 };
