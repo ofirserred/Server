@@ -10,6 +10,6 @@ const {
 
 router.get("/teacher-profile",   getTeacherProfileByEmail);
 router.post("/teacher-profile",  createTeacherProfile);
-router.post("/delete-profile",   deleteTeacherProfile);  // ← route חדש
+router.post("/teacher-delete-profile", deleteTeacherProfile);
 
 module.exports = router;

@@ -19,6 +19,6 @@ router.post("/student-profile", createStudentProfile);
 router.put("/student-profile", updateStudentProfile);
 
 // מחיקת פרופיל + משתמש
-router.post("/delete-profile", deleteStudentProfile);
+router.post("/student-delete-profile", deleteStudentProfile);
 
 module.exports = router;
