@@ -1,5 +1,3 @@
-// routes/studentRoutes.js
-
 const express = require("express");
 const router = express.Router();
 const {
@@ -9,16 +7,16 @@ const {
   deleteStudentProfile
 } = require("../controllers/studentProfileController");
 
-// שליפת פרופיל לפי אימייל
-router.get("/student-profile", getStudentProfileByEmail);
-
-// יצירת פרופיל חדש
+// יצירה
 router.post("/student-profile", createStudentProfile);
 
-// עדכון שדות בפרופיל
+// קריאה
+router.get("/student-profile", getStudentProfileByEmail);
+
+// עדכון
 router.put("/student-profile", updateStudentProfile);
 
-// מחיקת פרופיל + משתמש
+// מחיקה (אם כבר יש לך קובץ delete_profile_dialog, בתוכו תקרא לכתובת הזו)
 router.post("/student-delete-profile", deleteStudentProfile);
 
 module.exports = router;
