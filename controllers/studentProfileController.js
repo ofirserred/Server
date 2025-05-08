@@ -64,7 +64,7 @@ const updateStudentProfile = async (req, res) => {
 
 const deleteStudentProfile = async (req, res) => {
   try {
-    const { userEmail /*, password*/ } = req.body;  // שים לב: עכשיו שולחים userEmail
+    const { userEmail , password } = req.body;  // שים לב: עכשיו שולחים userEmail
 
     // 1. מחיקת פרופיל הסטודנט
     const deletedProfile = await StudentProfile.findOneAndDelete({ userEmail });

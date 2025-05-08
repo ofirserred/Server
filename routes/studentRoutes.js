@@ -17,6 +17,6 @@ router.get("/student-profile", getStudentProfileByEmail);
 router.put("/student-profile", updateStudentProfile);
 
 // מחיקה (אם כבר יש לך קובץ delete_profile_dialog, בתוכו תקרא לכתובת הזו)
-router.post("/student-delete-profile", deleteStudentProfile);
+router.post("/student-profile", deleteStudentProfile);
 
 module.exports = router;
