@@ -7,31 +7,44 @@ const {
   getTeacherProfileByEmail,
   updateTeacherProfile,
   deleteTeacherProfile
-} = require("../controllers/teacherProfileController");
+} = require("../controllers/teacherProfile.controller");
 
 const router = express.Router();
 
-// הגדרת multer לאחסון בזיכרון
+// multer לאחסון תמונות בזיכרון
 const upload = multer({ storage: multer.memoryStorage() });
 
-// יצירה (כולל העלאת תמונה ב-field "image")
+/**
+ * יצירת פרופיל מורה – JSON בלבד, בלי multer
+ */
 router.post(
   "/teacher-profile",
-  upload.single("image"),
   createTeacherProfile
 );
 
-// קריאה
-router.get("/teacher-profile", getTeacherProfileByEmail);
+/**
+ * קריאה של פרופיל מורה לפי אימייל
+ */
+router.get(
+  "/teacher-profile",
+  getTeacherProfileByEmail
+);
 
-// עדכון (אפשר גם לעדכן תמונה חדשה ב-field "image")
+/**
+ * עדכון פרופיל מורה – כולל אפשרות להעלות תמונה חדשה ב-field "image"
+ */
 router.put(
   "/teacher-profile",
   upload.single("image"),
   updateTeacherProfile
 );
 
-// מחיקה
-router.post("/teacher-delete-profile", deleteTeacherProfile);
+/**
+ * מחיקת פרופיל מורה & משתמש
+ */
+router.post(
+  "/teacher-delete-profile",
+  deleteTeacherProfile
+);
 
 module.exports = router;
