@@ -7,7 +7,7 @@ const {
   getTeacherProfileByEmail,
   updateTeacherProfile,
   deleteTeacherProfile
-} = require("../controllers/teacherProfile.controller");
+} = require("../controllers/teacherProfileController");
 
 const router = express.Router();
 
