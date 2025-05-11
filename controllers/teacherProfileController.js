@@ -1,4 +1,4 @@
-// controllers/teacherProfile.controller.js
+// controllers/teacherProfileController.js
 
 const TeacherProfile = require("../models/TeacherProfile");
 const User           = require("../models/User");

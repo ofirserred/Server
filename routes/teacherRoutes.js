@@ -15,10 +15,11 @@ const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 /**
- * יצירת פרופיל מורה – JSON בלבד, בלי multer
+ * יצירת פרופיל מורה – כולל העלאת תמונה
  */
 router.post(
   "/teacher-profile",
+  upload.single("image"),          // ✅ הוספנו את זה כאן בלבד
   createTeacherProfile
 );
 
