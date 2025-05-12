@@ -6,7 +6,8 @@ const {
   createTeacherProfile,
   getTeacherProfileByEmail,
   updateTeacherProfile,
-  deleteTeacherProfile
+  deleteTeacherProfile,
+  searchTeachers 
 } = require("../controllers/teacherProfileController");
 
 const router = express.Router();
@@ -47,5 +48,7 @@ router.post(
   "/teacher-delete-profile",
   deleteTeacherProfile
 );
+
+router.get("/teachers/search", searchTeachers);
 
 module.exports = router;

@@ -188,9 +188,58 @@ const deleteTeacherProfile = async (req, res) => {
   }
 };
 
+
+const searchTeachers = async (req, res) => {
+  try {
+    const { name = "", subjects = "" } = req.query;
+    const nameRegex = new RegExp(name.trim(), "i");
+
+    const subjectList = subjects
+      .split(" ")
+      .map(s => s.trim())
+      .filter(Boolean);
+
+    const query = {};
+
+    // סינון לפי שם (פרטי / משפחה / מלא)
+    if (name.trim()) {
+      query.$or = [
+        { firstName: nameRegex },
+        { lastName: nameRegex },
+        {
+          $expr: {
+            $regexMatch: {
+              input: { $concat: ["$firstName", " ", "$lastName"] },
+              regex: nameRegex
+            }
+          }
+        }
+      ];
+    }
+
+    // סינון לפי מקצועות
+    if (subjectList.length > 0) {
+      query.subjects = { $in: subjectList };
+    }
+
+    const teachers = await TeacherProfile.find(query).lean();
+
+    // הסרת שדה תמונה כדי לא להעביר נתונים כבדים
+    teachers.forEach(t => delete t.image);
+
+    return res.json(teachers);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "שגיאה בחיפוש מורים" });
+  }
+};
+
+
 module.exports = {
   createTeacherProfile,
   getTeacherProfileByEmail,
   updateTeacherProfile,
-  deleteTeacherProfile
+  deleteTeacherProfile,
+  searchTeachers
+
 };
