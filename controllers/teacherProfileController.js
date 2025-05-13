@@ -113,7 +113,7 @@ const getTeacherProfileByEmail = async (req, res) => {
  */
 const updateTeacherProfile = async (req, res) => {
   try {
-    const { userEmail, priceFrom, priceTo, subjects, experience, about } = req.body;
+    const { userEmail, city, priceFrom, priceTo, subjects, experience, about } = req.body;
 
     // parse subjects again
     let subjectsArray = [];
@@ -129,7 +129,7 @@ const updateTeacherProfile = async (req, res) => {
       }
     }
 
-    const updateFields = { priceFrom, priceTo, experience, about };
+    const updateFields = { city, priceFrom, priceTo, experience, about };
     if (subjectsArray.length) updateFields.subjects = subjectsArray;
 
     // אם הועלתה תמונה חדשה
@@ -191,8 +191,10 @@ const deleteTeacherProfile = async (req, res) => {
 
 const searchTeachers = async (req, res) => {
   try {
-    const { name = "", subjects = "" } = req.query;
+    const { name = "", subjects = "", city = "" } = req.query;
+
     const nameRegex = new RegExp(name.trim(), "i");
+    const cityRegex = new RegExp(city.trim(), "i");
 
     const subjectList = subjects
       .split(" ")
@@ -201,7 +203,7 @@ const searchTeachers = async (req, res) => {
 
     const query = {};
 
-    // סינון לפי שם (פרטי / משפחה / מלא)
+    // סינון לפי שם
     if (name.trim()) {
       query.$or = [
         { firstName: nameRegex },
@@ -222,17 +224,21 @@ const searchTeachers = async (req, res) => {
       query.subjects = { $in: subjectList };
     }
 
+    // ✅ סינון לפי עיר
+    if (city.trim()) {
+      query.city = cityRegex;
+    }
+
     const teachers = await TeacherProfile.find(query).lean();
-
-    // הסרת שדה תמונה כדי לא להעביר נתונים כבדים
     teachers.forEach(t => delete t.image);
-
     return res.json(teachers);
+
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "שגיאה בחיפוש מורים" });
   }
 };
+
 
 
 module.exports = {

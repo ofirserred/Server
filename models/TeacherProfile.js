@@ -20,4 +20,4 @@ const teacherProfileSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-module.exports = mongoose.model("TeacherProfile", teacherProfileSchema);
+module.exports = mongoose.model("TeacherProfile", teacherProfileSchema,"teacherprofiles");
