@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
 const teacherRoutes = require("./routes/teacherRoutes");
 const studentRoutes = require("./routes/studentRoutes");
+const lessonRequestRoutes = require("./routes/lessonRequestRoutes");
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use('/api', userRoutes);
 app.use("/api", teacherRoutes);
 app.use("/api", studentRoutes);
+app.use("/api", lessonRequestRoutes);
 
 
 
