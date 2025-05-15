@@ -7,7 +7,7 @@ const {
   createLessonRequest,
   getRequestsForTeacher,
   approveLessonRequest
-} = require("../controllers/lessonController");
+} = require("../controllers/lessonRequestController");
 
 // יצירת בקשת שיעור חדשה
 router.post("/lessons/request", createLessonRequest);
