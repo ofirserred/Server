@@ -1,14 +1,20 @@
 // controllers/lessonRequestController.js
 
 const LessonRequest = require("../models/LessonRequest");
+const StudentProfile = require("../models/StudentProfile"); // ודא שזה הנתיב הנכון
 
-// יצירת בקשת שיעור על ידי תלמיד
 const createLessonRequest = async (req, res) => {
   try {
     const { studentEmail, teacherEmail } = req.body;
 
     if (!studentEmail || !teacherEmail) {
       return res.status(400).json({ success: false, message: "חסר מייל תלמיד או מורה" });
+    }
+
+    // בדיקה האם לתלמיד יש פרופיל
+    const studentProfile = await StudentProfile.findOne({ userEmail: studentEmail });
+    if (!studentProfile) {
+      return res.status(400).json({ success: false, message: "אין לתלמיד פרופיל אישי. יש להשלים פרופיל תחילה." });
     }
 
     const request = new LessonRequest({ studentEmail, teacherEmail });
@@ -21,9 +27,9 @@ const createLessonRequest = async (req, res) => {
   }
 };
 
+
 // שליפת כל הבקשות עבור מורה מסוים
 // שליפת כל הבקשות עבור מורה מסוים + מידע על התלמיד
-const StudentProfile = require("../models/StudentProfile"); // ודא שהנתיב תקין
 
 const getRequestsForTeacher = async (req, res) => {
   try {
