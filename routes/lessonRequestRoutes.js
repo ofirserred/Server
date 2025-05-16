@@ -6,7 +6,8 @@ const router = express.Router();
 const {
   createLessonRequest,
   getRequestsForTeacher,
-  approveLessonRequest
+  approveLessonRequest,
+  rejectLessonRequest 
 } = require("../controllers/lessonRequestController");
 
 // יצירת בקשת שיעור חדשה
@@ -17,5 +18,8 @@ router.get("/lessons/requests", getRequestsForTeacher);
 
 // מורה מאשר או דוחה בקשת שיעור
 router.post("/lessons/respond", approveLessonRequest);
+
+router.post("/lessons/reject", rejectLessonRequest);
+
 
 module.exports = router;

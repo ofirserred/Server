@@ -22,6 +22,9 @@ const createLessonRequest = async (req, res) => {
 };
 
 // שליפת כל הבקשות עבור מורה מסוים
+// שליפת כל הבקשות עבור מורה מסוים + מידע על התלמיד
+const StudentProfile = require("../models/StudentProfile"); // ודא שהנתיב תקין
+
 const getRequestsForTeacher = async (req, res) => {
   try {
     const { teacherEmail } = req.query;
@@ -31,8 +34,29 @@ const getRequestsForTeacher = async (req, res) => {
     }
 
     const requests = await LessonRequest.find({ teacherEmail }).sort({ requestedAt: -1 });
-    res.json({ success: true, requests });
+
+    // חיבור כל בקשה עם פרופיל התלמיד
+    const enrichedRequests = await Promise.all(requests.map(async (req) => {
+      const studentProfile = await StudentProfile.findOne({ userEmail: req.studentEmail });
+
+      return {
+        _id: req._id,
+        requestedAt: req.requestedAt,
+        studentEmail: req.studentEmail,
+        firstName: studentProfile?.firstName || "",
+        gender: studentProfile?.gender || "",
+        grade: studentProfile?.grade || "",
+        region: studentProfile?.region || "",
+        approved: req.approved || false,
+        message: req.message || "",
+        phone: req.phone || ""
+      };
+    }));
+
+    res.json({ success: true, requests: enrichedRequests });
+
   } catch (error) {
+    console.error(error);
     res.status(500).json({ success: false, message: "שגיאה בשליפת בקשות" });
   }
 };
@@ -59,8 +83,27 @@ const approveLessonRequest = async (req, res) => {
   }
 };
 
+// דחיית בקשה (מחיקה)
+const rejectLessonRequest = async (req, res) => {
+  try {
+    const { requestId } = req.body;
+
+    if (!requestId) {
+      return res.status(400).json({ success: false, message: "חסר requestId" });
+    }
+
+    await LessonRequest.findByIdAndDelete(requestId);
+
+    res.json({ success: true, message: "הבקשה נמחקה בהצלחה" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "שגיאה בדחיית הבקשה" });
+  }
+};
+
 module.exports = {
   createLessonRequest,
   getRequestsForTeacher,
-  approveLessonRequest
+  approveLessonRequest,
+  rejectLessonRequest 
 };
